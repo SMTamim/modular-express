@@ -14,10 +14,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "modular-express.helloWorld",
-        "title": "Hello World"
-      },
-      {
         "command": "modular-express.createNewExpressProject",
         "title": "Create New Express Project"
       },

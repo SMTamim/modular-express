@@ -1,71 +1,199 @@
-# modular-express README
+# Modular Express
 
-This is the README for your extension "modular-express". After writing up a brief description, we recommend including the following sections.
+A VS Code extension that helps you generate and manage modular Express.js applications using TypeScript. This extension provides a robust project structure with comprehensive error handling, query building, and modular architecture.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### 1. Express Project Generation
+- 🎯 Creates a complete Express.js project structure with advanced error handling
+- ⚡ Automatically installs all required dependencies
+- 📦 Sets up TypeScript configuration
+- 🏗️ Implements modular architecture patterns
+- 🔧 Includes query builder for MongoDB operations
+- 🛡️ Comprehensive error handling system
+- 🚦 Global error handling middleware
 
-For example if there is an image subfolder under your extension project workspace:
+### 2. Module Generation
+- 🚀 Quick module generation with a single command
+- 📁 Creates complete module structure with all necessary files
+- 🏷️ TypeScript support out of the box
+- 🎯 Follows Express.js best practices
+- 🧩 Generates boilerplate code for all module components
 
-\!\[feature X\]\(images/feature-x.png\)
+## Project Structure
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```
+project-name/
+├── src/
+├── node_modules/
+│   ├── app.ts
+│   ├── server.ts
+│   └── app/
+│       ├── builder/
+│       │   └── QueryBuilder.ts
+│       ├── config/
+│       │   └── index.ts
+│       ├── error/
+│       │   ├── AppError.ts
+│       │   ├── AuthError.ts
+│       │   ├── handleAppError.ts
+│       │   ├── handleAuthError.ts
+│       │   ├── handleCastError.ts
+│       │   ├── handleDuplicateError.ts
+│       │   ├── handleMongooseValidationError.ts
+│       │   ├── handleNotFoundError.ts
+│       │   ├── handleZodError.ts
+│       │   └── NotFoundError.ts
+│       ├── interface/
+│       │   └── error.ts
+│       ├── middlewares/
+│       │   ├── globalErrorHandler.ts
+│       │   ├── notFound.ts
+│       │   └── validateRequest.ts
+│       ├── modules/
+│       │   ├── home/
+│       │   │   ├── home.controller.ts
+│       │   │   └── home.route.ts
+│       ├── routes/
+│       │   └── index.ts
+│       └── utils/
+│           ├── catchAsync.ts
+│           └── sendResponse.ts
+├── package.json
+├── tsconfig.json
+└── eslint.config.mjs
+```
 
-## Requirements
+## Key Components
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Builder
+- **QueryBuilder**: Handles MongoDB query operations with support for:
+  - Search functionality
+  - Filtering
+  - Sorting
+  - Pagination
+  - Field selection
 
-## Extension Settings
+### Error Handling System
+- **Custom Error Classes**:
+  - `AppError`: Base error class
+  - `AuthError`: Authentication errors
+  - `NotFoundError`: Resource not found errors
+- **Error Handlers**:
+  - MongoDB cast errors
+  - Duplicate key errors
+  - Validation errors
+  - Zod validation errors
+  - Authentication errors
+  - Generic app errors
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### Middleware
+- **globalErrorHandler**: Central error processing
+- **validateRequest**: Request validation using Zod
+- **notFound**: 404 error handling
 
-For example:
+### Utils
+- **catchAsync**: Async error wrapper
+- **sendResponse**: Standardized response formatter
 
-This extension contributes the following settings:
+### Modules
+Each module follows a consistent structure:
+- **constant.ts**: Module constants and enums
+- **controller.ts**: Request handlers
+- **interface.ts**: TypeScript interfaces
+- **model.ts**: Mongoose model
+- **route.ts**: Express routes
+- **service.ts**: Business logic
+- **validation.ts**: Zod validation schemas
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Installation
+
+1. Open VS Code
+2. Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)
+3. Search for "Modular Express"
+4. Click Install
+
+## Usage
+
+### Creating a New Express Project
+
+1. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS)
+2. Type "Create New Express Project" and select the command
+3. Enter your project name when prompted
+4. Wait for the project to be created and dependencies to be installed
+
+### Creating a New Module
+
+1. Open your Express.js project in VS Code
+2. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS)
+3. Type "Create Module" and select the command
+4. Enter your module name when prompted
+
+## Project Dependencies
+
+```json
+{
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http-status": "^1.6.2",
+    "mongoose": "^8.9.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.4.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2"
+  }
+}
+```
+
+## Best Practices
+
+1. **Error Handling**:
+   - Use appropriate error classes for different types of errors
+   - Always wrap async routes with catchAsync
+   - Implement proper validation using Zod schemas
+
+2. **Query Building**:
+   - Use QueryBuilder for complex MongoDB queries
+   - Implement proper pagination and filtering
+   - Use field selection to optimize response size
+
+3. **Module Structure**:
+   - Keep business logic in service layer
+   - Use controllers for request/response handling only
+   - Implement proper validation schemas
+   - Define clear interfaces for type safety
+
+## Commands
+
+This extension contributes the following commands:
+
+* `modular-express.createNewExpressProject`: Creates a new Express.js project with complete setup
+* `modular-express.createNewModule`: Creates a new module in an existing project
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+None at the moment. If you find any issues, please report them on our GitHub repository.
 
-## Release Notes
+## Contributing
 
-Users appreciate release notes as you update your extension.
+We welcome contributions! Please feel free to submit a Pull Request.
 
-### 1.0.0
+## License
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+MIT
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Enjoy building scalable Express applications!**
