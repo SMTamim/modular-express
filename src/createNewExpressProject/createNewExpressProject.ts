@@ -78,7 +78,7 @@ export const createNewExpressProject = vscode.commands.registerCommand('modular-
   // Install dependencies and devDependencies after opening the project
   const installDependencies = (): Promise<void> => {
     return new Promise((resolve, reject) => {
-      const dependencies = ['express', 'cors', 'mongoose', 'zod', 'dotenv', 'cookie-parser', 'http-status'];
+      const dependencies = ['express', 'cors', 'mongoose', 'zod', 'dotenv', 'cookie-parser', 'http-status@1.6.2'];
       const devDependencies = ['typescript', 'ts-node-dev', 'prettier', 'eslint', 'typescript-eslint', 'eslint-plugin-prettier', 'eslint-config-prettier', '@types/node', '@types/express', '@types/cors'];
 
       // Install regular dependencies
@@ -89,6 +89,7 @@ export const createNewExpressProject = vscode.commands.registerCommand('modular-
           reject(err);
           return;
         }
+        vscode.window.showInformationMessage('Project dependencies installed successfully. Installing devDependencies...');
         // Install dev dependencies after regular dependencies complete
         exec(`npm install -D ${devDependencies.join(' ')}`, { cwd: projectPath }, (err, stdout, stderr) => {
           if (err) {
