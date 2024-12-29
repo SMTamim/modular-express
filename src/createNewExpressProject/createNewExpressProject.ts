@@ -76,31 +76,39 @@ export const createNewExpressProject = vscode.commands.registerCommand('modular-
   }
 
   // Install dependencies and devDependencies after opening the project
-  const installDependencies = () => {
-    const dependencies = ['express', 'cors', 'mongoose', 'zod', 'dotenv', 'cookie-parser', 'http-status'];
-    const devDependencies = ['typescript', 'ts-node-dev', 'prettier', 'eslint', 'typescript-eslint', 'eslint-plugin-prettier', 'eslint-config-prettier', '@types/node', '@types/express', '@types/cors'];
+  const installDependencies = (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const dependencies = ['express', 'cors', 'mongoose', 'zod', 'dotenv', 'cookie-parser', 'http-status'];
+      const devDependencies = ['typescript', 'ts-node-dev', 'prettier', 'eslint', 'typescript-eslint', 'eslint-plugin-prettier', 'eslint-config-prettier', '@types/node', '@types/express', '@types/cors'];
 
-    exec(`npm install ${dependencies.join(' ')}`, { cwd: projectPath }, (err, stdout, stderr) => {
-      if (err) {
-        vscode.window.showErrorMessage('Failed to install dependencies');
-        console.error(stderr);
-        return;
-      }
-      vscode.window.showInformationMessage('Dependencies installed successfully');
-    });
-
-    exec(`npm install -D ${devDependencies.join(' ')}`, { cwd: projectPath }, (err, stdout, stderr) => {
-      if (err) {
-        vscode.window.showErrorMessage('Failed to install devDependencies');
-        console.error(stderr);
-        return;
-      }
-      vscode.window.showInformationMessage('DevDependencies installed successfully');
+      // Install regular dependencies
+      exec(`npm install ${dependencies.join(' ')}`, { cwd: projectPath }, (err, stdout, stderr) => {
+        if (err) {
+          vscode.window.showErrorMessage('Failed to install dependencies');
+          console.error(stderr);
+          reject(err);
+          return;
+        }
+        // Install dev dependencies after regular dependencies complete
+        exec(`npm install -D ${devDependencies.join(' ')}`, { cwd: projectPath }, (err, stdout, stderr) => {
+          if (err) {
+            vscode.window.showErrorMessage('Failed to install devDependencies');
+            console.error(stderr);
+            reject(err);
+            return;
+          }
+          vscode.window.showInformationMessage('All Dependencies installed successfully');
+          resolve();
+        });
+      });
     });
   };
 
   vscode.window.showInformationMessage('Installing dependencies. This might take a while...');
-  installDependencies();
+
+  // Wait for dependencies to be installed
+  await installDependencies();
+
 
   // Generate additional config files
   const tsConfig = {
