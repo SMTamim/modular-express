@@ -2,6 +2,7 @@
   "name": "modular-express",
   "displayName": "modular-express",
   "description": "An extension that generate modular pattern of express and also lets you create the modules",
+  "repository": "https://github.com/SMTamim/modular-express",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.96.0"
@@ -53,6 +54,7 @@
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.2.0",
+    "vsce": "^2.15.0"
   }
 }
